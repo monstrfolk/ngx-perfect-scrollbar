@@ -1,7 +1,6 @@
 .*
 *.tgz
 
-src/
 config/
 example/
 
