@@ -1,6 +1,6 @@
 import * as Ps from 'perfect-scrollbar';
 
-import { Component, DoCheck, OnDestroy, OnChanges, Input, Optional, HostBinding, ElementRef, AfterViewInit, ViewEncapsulation, SimpleChanges, NgZone } from '@angular/core';
+import { Component, DoCheck, OnDestroy, OnChanges, Input, Output, EventEmitter, Optional, HostBinding, ElementRef, AfterViewInit, ViewEncapsulation, SimpleChanges, NgZone } from '@angular/core';
 
 import { PerfectScrollbarConfig, PerfectScrollbarConfigInterface } from './perfect-scrollbar.interfaces';
 
@@ -23,6 +23,26 @@ export class PerfectScrollbarComponent implements DoCheck, OnDestroy, OnChanges,
   @Input() runInsideAngular: boolean = false;
 
   @Input() config: PerfectScrollbarConfigInterface;
+
+  @Output() onScrollX: EventEmitter<null>;
+
+  @Output() onScrollY: EventEmitter<null>;
+
+  @Output() onScrollUp: EventEmitter<null>;
+
+  @Output() onScrollDown: EventEmitter<null>;
+
+  @Output() onScrollLeft: EventEmitter<null>;
+
+  @Output() onScrollRight: EventEmitter<null>;
+
+  @Output() onYScrollReachStart: EventEmitter<null>;
+
+  @Output() onYScrollReachEnd: EventEmitter<null>;
+
+  @Output() onXScrollReachStart: EventEmitter<null>;
+
+  @Output() onXScrollReachEnd: EventEmitter<null>;
 
   constructor( public elementRef: ElementRef, @Optional() private defaults: PerfectScrollbarConfig, private zone: NgZone ) {}
 
@@ -54,6 +74,17 @@ export class PerfectScrollbarComponent implements DoCheck, OnDestroy, OnChanges,
         Ps.destroy(this.elementRef.nativeElement);
       });
     }
+
+    document.removeEventListener('ps-scroll-y');
+    document.removeEventListener('ps-scroll-x');
+    document.removeEventListener('ps-scroll-up');
+    document.removeEventListener('ps-scroll-down');
+    document.removeEventListener('ps-scroll-left');
+    document.removeEventListener('ps-scroll-right');
+    document.removeEventListener('ps-y-reach-start');
+    document.removeEventListener('ps-y-reach-end');
+    document.removeEventListener('ps-x-reach-start');
+    document.removeEventListener('ps-x-reach-end');
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -74,6 +105,8 @@ export class PerfectScrollbarComponent implements DoCheck, OnDestroy, OnChanges,
         Ps.initialize(this.elementRef.nativeElement, config);
       });
     }
+
+    this.updateEventEmitters();
   }
 
   update() {
@@ -82,6 +115,71 @@ export class PerfectScrollbarComponent implements DoCheck, OnDestroy, OnChanges,
     } else {
       this.zone.runOutsideAngular(() => {
         Ps.update(this.elementRef.nativeElement);
+      });
+    }
+  }
+
+  updateEventEmitters() {
+    if (this.onScrollX.observers.length > 0) {
+      this.onScrollX = new EventEmitter();
+      document.addEventListener('ps-scroll-y', function () {
+        this.onScrollX.emit();
+      });
+    }
+    if (this.onScrollY.observers.length > 0) {
+      this.onScrollY = new EventEmitter();
+      document.addEventListener('ps-scroll-x', function () {
+        this.onScrollY.emit();
+      });
+    }
+    if (this.onScrollUp.observers.length > 0) {
+      this.onScrollUp = new EventEmitter();
+      document.addEventListener('ps-scroll-up', function () {
+        this.onScrollUp.emit();
+      });
+    }
+    if (this.onScrollDown.observers.length > 0) {
+      this.onScrollDown = new EventEmitter();
+      document.addEventListener('ps-scroll-down', function () {
+        this.onScrollDown.emit();
+      });
+    }
+    if (this.onScrollLeft.observers.length > 0) {
+      this.onScrollLeft = new EventEmitter();
+      document.addEventListener('ps-scroll-left', function () {
+        this.onScrollLeft.emit();
+      });
+    }
+    if (this.onScrollRight.observers.length > 0) {
+      this.onScrollRight = new EventEmitter();
+      document.addEventListener('ps-scroll-right', function () {
+        this.onScrollRight.emit();
+      });
+    }
+    if (this.onYScrollReachStart.observers.length > 0) {
+      this.onYScrollReachStart = new EventEmitter();
+      document.addEventListener('ps-y-reach-start', function () {
+        this.onYScrollReachStart.emit();
+      });
+    }
+    //if (this.onYScrollReachEnd.observers.length > 0) {
+      console.log('starting');
+      this.onYScrollReachEnd = new EventEmitter();
+      document.addEventListener('ps-y-reach-end', function () {
+        console.log('scroll end y');
+        this.onYScrollReachEnd.emit();
+      });
+    //}
+    if (this.onXScrollReachStart.observers.length > 0) {
+      this.onXScrollReachStart = new EventEmitter();
+      document.addEventListener('ps-x-reach-start', function () {
+        this.onXScrollReachStart.emit();
+      });
+    }
+    if (this.onXScrollReachEnd.observers.length > 0) {
+      this.onXScrollReachEnd = new EventEmitter();
+      document.addEventListener('ps-x-reach-end', function () {
+        this.onXScrollReachEnd.emit();
       });
     }
   }
@@ -126,3 +224,4 @@ export class PerfectScrollbarComponent implements DoCheck, OnDestroy, OnChanges,
     this.update();
   }
 }
+

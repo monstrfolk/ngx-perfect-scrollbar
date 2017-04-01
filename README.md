@@ -92,4 +92,20 @@ scrollYMarginOffset     // Offset before enabling the Y scroller (Default: 0).
 stopPropagationOnClick  // Stop the propagation of click event (Default: true).
 ```
 
+
+##### Available event emitters:
+
+```javascript
+onScrollY               // This event fires when the y-axis is scrolled in either direction.
+onScrollX               // This event fires when the x-axis is scrolled in either direction.
+onScrollUp              // This event fires when scrolling upwards.
+onScrollDown            // This event fires when scrolling downwards.
+onScrollLeft            // This event fires when scrolling to the left.
+onScrollRight           // This event fires when scrolling to the right.
+onYScrollStart          // This event fires when scrolling reaches the start of the y-axis.
+onYScrollEnd            // This event fires when scrolling reaches the end of the y-axis (useful for infinite scroll).
+onXScrollStart          // This event fires when scrolling reaches the start of the x-axis.
+onXScrollEnd            // This event fires when scrolling reaches the end of the x-axis.
+```
+
 For more detailed documentation with all the supported options see [Perfect Scrollbar documentation](https://github.com/noraesae/perfect-scrollbar/).

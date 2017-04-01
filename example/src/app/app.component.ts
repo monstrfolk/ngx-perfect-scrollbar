@@ -38,4 +38,8 @@ export class AppComponent {
     this.componentScroll.scrollToBottom();
     this.directiveScroll.scrollToBottom();
   }
+
+  onYScrollReachEnd() {
+    console.log('onYScrollReachEnd');
+  }
 }
